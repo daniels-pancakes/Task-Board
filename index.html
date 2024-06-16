@@ -20,11 +20,47 @@
     <h1 class="display-3">Task Board</h1>
     <p class="lead">A simple Kanban board for task management</p>
   </header>
+  
   <div class="container">
+    
     <div class="text-center mb-5">
+<!-- Check out line 29 -->
+<!-- The data-bs-* format is indicative of bootstrap being in use. -->
+<!-- Things like btn-success are styling options. "success" in this case will show a green button indicating input received etc. -->
+<!-- Also want to call attention to "data-bs-target". This was in our starter code, we'll want to use this to link up the modal code. -->
       <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#formModal">Add Task</button>
     </div>
-    <!-- Todo: Create a modal with a form to add tasks -->
+<!-- Modal trigger button -->
+    <div id="formModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+<!-- Modal content -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">Add Task</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="row-3 p-3">
+                <div class="col">
+                <label for="Task Title" class="col-form-label">Task Title</label>
+                <input type="text" class="form-control" id="task-title">
+                </div>
+                <div class="col">
+                <label for="Task Due Date" class="col-form-label">Task Due Date</label>
+                <input type="text" class="form-control" id="task-due-date">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+
+          </div>
+            
+        </div>
+        </div>
+      </div>
+    </div>
     <div class="row swim-lanes text-center justify-content-between">
       <div class="col-12 col-lg-4 d-flex">
         <div id="to-do" class="card border-light mb-3 lane flex-grow-1">
@@ -59,6 +95,7 @@
     </div>
   </div>
 
+  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
@@ -68,6 +105,7 @@
     integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
 
   <script src="./assets/js/script.js"></script>
+
 </body>
 
 </html>

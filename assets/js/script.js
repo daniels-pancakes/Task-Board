@@ -2,28 +2,30 @@
 let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
+const taskDueDate = $('#task-due-date');
+
 // Todo: create a function to generate a unique task id
-function generateTaskId() {
-    const randomID = Math.floor(Math.random() * 9999);
-    if  (taskList === null) {
-        taskList = [];
-        const randomID = Math.floor(Math.random() * 9999);
-        console.log(typeof(taskList));
-        taskList.push(randomID);
-        localStorage.setItem('tasks', taskList);
-    }
-    else if (taskList.indexOf(randomID) > -1) {
-        const randomID = Math.floor(Math.random() * 9999);
-        taskList.push(randomID);
-        localStorage.setItem('tasks', taskList);
-        return randomID;
-    } else {
-    taskList.push(randomID);
-    localStorage.setItem(taskList);
-    return randomID;
-    }
-}
-console.log(generateTaskId());
+// function generateTaskId() {
+//     const randomID = Math.floor(Math.random() * 9999);
+//     if  (taskList === null) {
+//         taskList = [];
+//         const randomID = Math.floor(Math.random() * 9999);
+//         console.log(typeof(taskList));
+//         taskList.push(randomID);
+//         localStorage.setItem('tasks', taskList);
+//     }
+//     else if (taskList.indexOf(randomID) > -1) {
+//         const randomID = Math.floor(Math.random() * 9999);
+//         taskList.push(randomID);
+//         localStorage.setItem('tasks', taskList);
+//         return randomID;
+//     } else {
+//     taskList.push(randomID);
+//     localStorage.setItem(taskList);
+//     return randomID;
+//     }
+// }
+// console.log(generateTaskId());
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
@@ -54,4 +56,12 @@ function handleDrop(event, ui) {
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
     renderTaskList()
+$(function () {
+    $(taskDueDate).datepicker({
+        changeMonth: true,
+        changeYear: true,
+    });
+
+});
+
 });
