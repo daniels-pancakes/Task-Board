@@ -42,21 +42,36 @@
           </div>
           <div class="modal-body">
             <form>
-              <div class="row-3 p-3">
-                <div class="col">
-                <label for="Task Title" class="col-form-label">Task Title</label>
-                <input type="text" class="form-control" id="task-title">
+<!-- Note the use of px-* for padding here. This will place padding on left-right only. Helps to achieve the desired spacing without creating too large of a spacing vertically between elements. -->
+              <div class="row px-3">
+                <div class="col mb-1 lg-1">
+                  <label for="Task Title" class="col-form-label">Task Title</label>
+                  <input type="text" class="form-control" id="task-title">
                 </div>
-                <div class="col">
-                <label for="Task Due Date" class="col-form-label">Task Due Date</label>
-                <input type="text" class="form-control" id="task-due-date">
+                <div class="col mb-1 lg-1">
+                  <label for="Task Due Date" class="col-form-label">Task Due Date</label>
+                  <input type="text" class="form-control" id="task-due-date">
+                </div>
               </div>
+<!-- Likewise here. Including px-3 in the row ensures spacing even with previous row. -->
+              <div class="row px-3">
+                <div class="col">
+                  <label for="Task Desciption" class="col-form-label">Task Description</label>
+                  <textarea class="form-control" aria-label="Task description" id="task-desc"></textarea>
+                </div>
+              </div>
+              <div class="row p-3">
+<!-- Note the use of offset here. I've used this to effectively center the column containing our submit button. -->
+                <div class="col offset-4">
+                  <button type="btn btn-success" class="btn-success" aria-label="Submit Task">
+                    Submit Task
+                  </button>
+                </div>
+              </div>
+
+
             </form>
           </div>
-          <div class="modal-footer">
-
-          </div>
-            
         </div>
         </div>
       </div>
