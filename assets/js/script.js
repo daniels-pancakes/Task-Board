@@ -32,15 +32,7 @@ function generateTaskId() {
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-    if (task.date < dayjs().$d) {
 
-    }
-    else if (task.date = dayjs().$d) {
-
-    }
-    else if (task.date > dayjs().$d) {
-
-    }
     const taskCard = $('<div></div>')
     taskCard.addClass("card my-2");
     taskCard.attr("id", task.id);
@@ -49,23 +41,41 @@ function createTaskCard(task) {
         cardBody.addClass("card-body");
         taskCard.append(cardBody);
 
-        const cardTitle = $('<h3></h3>').text(task.title);
-        cardTitle.addClass("card-title");
-        cardBody.append(cardTitle);
+        const cardHeader = $('<div></div')
+        cardHeader.addClass("card-header py-2");
+        cardBody.append(cardHeader);
 
-        const cardDate = $('<h9></h9>').text('Due: ' + task.date);
-        cardDate.addClass("card-subtitle");
-        cardBody.append(cardDate);
+        const cardTitle = $('<h2></h2>').text(task.title);
+        cardTitle.addClass("card-title");
+        cardHeader.append(cardTitle);
+
+        const cardDate = $('<h6></h6>').text('Due: ' + task.date);
+        cardDate.addClass("card-subtitle py-2");
+        cardHeader.append(cardDate);3
     
         const cardText = $('<p></p>').text(task.desc);
         cardText.addClass("card-text py-2");
         cardBody.append(cardText);
 
+        const cardFooter = $('<div></div')
+        cardFooter.addClass("card-footer py-2");
+        cardBody.append(cardFooter);
+
         const deleteTask = $('<button></button').text('Delete');
         deleteTask.addClass("btn btn-outline-danger");
         deleteTask.attr("id", "del");
-        cardBody.append(deleteTask);
+        cardFooter.append(deleteTask);
     toDoCard.append(taskCard);
+    console.log(dayjs().format('MM/DD/YYYY'));
+    if (task.date < dayjs().format('MM/DD/YYYY')) {
+        taskCard.addClass("card text-white bg-danger my-2")
+    }
+    else if (task.date === dayjs().format('MM/DD/YYYY')) {
+        taskCard.addClass("card text-white bg-warning my-2")
+    }
+    else if (task.date > dayjs().format('MM/DD/YYYY')) {
+        taskCard.addClass("card bg-light my-2")
+    }
 };
 
 // Todo: create a function to render the task list and make cards draggable
