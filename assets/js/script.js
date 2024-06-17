@@ -2,6 +2,8 @@
 let taskList = JSON.parse(localStorage.getItem("tasks"));
 if (taskList === null) {
     taskList = []};
+
+// I did not find a use for the below starter code. Achieved complete functionality without the need for use.
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
 const formEl = $('#formModal');
@@ -24,6 +26,7 @@ let delBtn = $('#del');
 // Create a function to generate a unique task id
 function generateTaskId() {
     let randomID;
+// do while loop will generate a randomID until it gets one that is not already in the taskList. Accounts for the unlikely event of duplicates.
     do {
         randomID = Math.floor(Math.random() * 9999);
     } while (taskList.some(task => task.id === randomID));
@@ -33,10 +36,12 @@ function generateTaskId() {
 // Create a function to create a task card
 function createTaskCard(task) {
 
+// Task card
     const taskCard = $('<div></div>')
     taskCard.addClass("card my-2");
     taskCard.attr("id", task.id);
 
+// Task body
         const cardBody = $('<div></div')
         cardBody.addClass("card-body");
         taskCard.append(cardBody);
@@ -66,6 +71,7 @@ function createTaskCard(task) {
         deleteTask.attr("id", "del");
         cardFooter.append(deleteTask);
 
+// The following code handles color styling based on the date. If the date is overdue it will assign danger coloring. If today's date is the same, it will assign warning coloring. If it is due in advance it will assign a coloring of 
         if (task.status==='todo-cards') {
 
             if (task.date < dayjs().format('MM/DD/YYYY')) {
@@ -143,9 +149,7 @@ function handleAddTask(event){
 function handleDeleteTask(event) {
     const clickedBtn = $(event.target);
     cardId = Number(clickedBtn.closest('.card').attr("id"));
-    console.log(cardId);
     index = taskList.findIndex(task => task.id === cardId);
-    console.log(index);
     taskList.splice(index, 1);
     localStorage.setItem("tasks", JSON.stringify(taskList));
     clickedBtn.closest('.card').remove();
@@ -161,6 +165,8 @@ function handleDrop(event, ui) {
     index = taskList.findIndex(task => task.id === cardId);
     taskList[index].status = cardLane;
     console.log(ui.helper[0]);
+
+// I've followed a similar pattern here for changing my card colors when they are dropped into new lanes. The main difference being use of ui.helper and DOM traversal to point to the correct elements for styling.
     if (cardLane ==='done-cards') {
         $(ui.helper[0]).attr("class", "card text-dark bg-light my-2");
         $(ui.helper[0]).children().children('.card-footer').children('.btn').attr("class", "btn btn-outline-dark");
@@ -190,7 +196,7 @@ $(document).ready(function () {
     formEl.on('submit', handleAddTask);
     $(document).on('click', '#del', handleDeleteTask);
 
-// (4.) Datepicker functionality
+// Datepicker functionality
     $(function () {
         $(taskDueDateEl).datepicker({
             // This toggles drop down selection lists for month and year. 'false' turns off.
