@@ -32,6 +32,15 @@ function generateTaskId() {
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
+    if (task.date < dayjs().$d) {
+
+    }
+    else if (task.date = dayjs().$d) {
+
+    }
+    else if (task.date > dayjs().$d) {
+
+    }
     const taskCard = $('<div></div>')
     taskCard.addClass("card my-2");
     taskCard.attr("id", task.id);
