@@ -51,13 +51,13 @@ function createTaskCard(task) {
 
         const cardDate = $('<h6></h6>').text('Due: ' + task.date);
         cardDate.addClass("card-subtitle py-2");
-        cardHeader.append(cardDate);3
+        cardHeader.append(cardDate);
     
         const cardText = $('<p></p>').text(task.desc);
         cardText.addClass("card-text py-4");
         cardBody.append(cardText);
 
-        const cardFooter = $('<div></div')
+        const cardFooter = $('<div></div');
         cardFooter.addClass("card-footer py-2");
         cardBody.append(cardFooter);
 
@@ -65,7 +65,15 @@ function createTaskCard(task) {
         deleteTask.addClass("btn btn-outline-dark");
         deleteTask.attr("id", "del");
         cardFooter.append(deleteTask);
-        toDoCard.append(taskCard);
+
+        if (task.status==='todo-cards') {
+            toDoCard.append(taskCard)
+        }
+        else if (task.status==='in-progress-cards') {
+            inProgressCard.append(taskCard)}
+        else if (task.status==='done-cards') {
+            doneCard.append(taskCard)
+            };
 
     if (task.date < dayjs().format('MM/DD/YYYY')) {
         taskCard.addClass("card text-white bg-danger my-2")
@@ -79,19 +87,14 @@ function createTaskCard(task) {
         taskCard.addClass("card bg-light my-2")
     }
 
-    if (task.status='todo') {
-    toDoCard.append(taskCard) }
-    else if (task.status='inprogress') {
-    inProgressCard.append(taskCard)}
-    else if (task.status='done') {
-    doneCard.append(taskCard)
-    };
+
 };
 
 // Create a function to render the task list and make cards draggable
 function renderTaskList() {
     if (taskList != null) {
         for (let i = 0; i < taskList.length; ++i) {
+            console.log(taskList[i].status);
             createTaskCard(taskList[i]);
         }
     }
@@ -107,16 +110,13 @@ function handleAddTask(event){
         this.title = taskTitle;
         this.date = taskDueDate;
         this.desc = taskDesc;
-        this.status = 'todo';
+        this.status = 'todo-cards';
         this.id = generateTaskId();
     };
-    const task = new Task(taskTitle, taskDueDate, taskDesc, 'todo', generateTaskId());
-    console.log(taskList);
-    typeof(taskList);
+    const task = new Task(taskTitle, taskDueDate, taskDesc, 'todo-cards', generateTaskId());
     taskList.push(task);
     localStorage.setItem("tasks", JSON.stringify(taskList));
     createTaskCard(task);
-    console.log(task);
     taskTitleEl.val('');
     taskDueDateEl.val('');
     taskDescEl.val('');
@@ -136,17 +136,16 @@ function handleDeleteTask(event) {
 
 // Create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-    console.log("Drop event triggered");
 // ui.helper points to the item that was dropped
     const dropCard = ui.helper;
 // this.attr('id') points to the lane receiving the dropped card
     const cardLane = $(this).attr('id');
-    console.log('$(this).attr(id)' + cardLane);
     cardId = Number(dropCard.attr('id'));
-    console.log('ID ' + cardId);
     index = taskList.findIndex(task => task.id === cardId);
-    console.log('Status ' + taskList[index].status);
+    console.log('Status before ' + taskList[index].status);
     taskList[index].status = cardLane;
+    console.log('Status after' + taskList[index].status);
+    localStorage.setItem("tasks", JSON.stringify(taskList));
 };
 
 // When the page loads, (1.) render the task list, (2.) add event listeners, (3.) make lanes droppable, and (4.) make the due date field a date picker
