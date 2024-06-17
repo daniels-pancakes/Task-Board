@@ -21,7 +21,7 @@ const doneCard = $('#done-cards');
 let delBtn = $('#del');
 
 
-// Todo: create a function to generate a unique task id
+// Create a function to generate a unique task id
 function generateTaskId() {
     let randomID;
     do {
@@ -30,7 +30,7 @@ function generateTaskId() {
     return randomID;
     };
 
-// Todo: create a function to create a task card
+// Create a function to create a task card
 function createTaskCard(task) {
 
     const taskCard = $('<div></div>')
@@ -54,7 +54,7 @@ function createTaskCard(task) {
         cardHeader.append(cardDate);3
     
         const cardText = $('<p></p>').text(task.desc);
-        cardText.addClass("card-text py-2");
+        cardText.addClass("card-text py-4");
         cardBody.append(cardText);
 
         const cardFooter = $('<div></div')
@@ -62,33 +62,42 @@ function createTaskCard(task) {
         cardBody.append(cardFooter);
 
         const deleteTask = $('<button></button').text('Delete');
-        deleteTask.addClass("btn btn-outline-danger");
+        deleteTask.addClass("btn btn-outline-dark");
         deleteTask.attr("id", "del");
         cardFooter.append(deleteTask);
-    toDoCard.append(taskCard);
-    console.log(dayjs().format('MM/DD/YYYY'));
+        toDoCard.append(taskCard);
+
     if (task.date < dayjs().format('MM/DD/YYYY')) {
         taskCard.addClass("card text-white bg-danger my-2")
+        deleteTask.attr("class", "btn btn-outline-light")
     }
     else if (task.date === dayjs().format('MM/DD/YYYY')) {
-        taskCard.addClass("card text-white bg-warning my-2")
+        taskCard.addClass("card text-dark bg-warning my-2")
+        deleteTask.attr("class", "btn btn-outline-dark")
     }
     else if (task.date > dayjs().format('MM/DD/YYYY')) {
         taskCard.addClass("card bg-light my-2")
     }
+
+    if (task.status='todo') {
+    toDoCard.append(taskCard) }
+    else if (task.status='inprogress') {
+    inProgressCard.append(taskCard)}
+    else if (task.status='done') {
+    doneCard.append(taskCard)
+    };
 };
 
-// Todo: create a function to render the task list and make cards draggable
+// Create a function to render the task list and make cards draggable
 function renderTaskList() {
     if (taskList != null) {
         for (let i = 0; i < taskList.length; ++i) {
             createTaskCard(taskList[i]);
         }
     }
-
 };
 
-// Todo: create a function to handle adding a new task
+// Create a function to handle adding a new task
 function handleAddTask(event){
     event.preventDefault();
     const taskTitle = taskTitleEl.val();
@@ -111,10 +120,9 @@ function handleAddTask(event){
     taskTitleEl.val('');
     taskDueDateEl.val('');
     taskDescEl.val('');
-
 };
 
-// Todo: create a function to handle deleting a task
+// Create a function to handle deleting a task
 function handleDeleteTask(event) {
     const clickedBtn = $(event.target);
     cardId = Number(clickedBtn.closest('.card').attr("id"));
@@ -126,11 +134,22 @@ function handleDeleteTask(event) {
     clickedBtn.closest('.card').remove();
 };
 
-// Todo: create a function to handle dropping a task into a new status lane
+// Create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
+    console.log("Drop event triggered");
+// ui.helper points to the item that was dropped
+    const dropCard = ui.helper;
+// this.attr('id') points to the lane receiving the dropped card
+    const cardLane = $(this).attr('id');
+    console.log('$(this).attr(id)' + cardLane);
+    cardId = Number(dropCard.attr('id'));
+    console.log('ID ' + cardId);
+    index = taskList.findIndex(task => task.id === cardId);
+    console.log('Status ' + taskList[index].status);
+    taskList[index].status = cardLane;
 };
 
-// Todo: when the page loads, (1.) render the task list, (2.) add event listeners, (3.) make lanes droppable, and (4.) make the due date field a date picker
+// When the page loads, (1.) render the task list, (2.) add event listeners, (3.) make lanes droppable, and (4.) make the due date field a date picker
 $(document).ready(function () {
     renderTaskList();
 
@@ -141,7 +160,7 @@ $(document).ready(function () {
 // (4.) Datepicker functionality
     $(function () {
         $(taskDueDateEl).datepicker({
-// This toggles drop down selection lists for month and year. 'false' turns off.
+            // This toggles drop down selection lists for month and year. 'false' turns off.
             changeMonth: true,
             changeYear: true,
         });
@@ -149,11 +168,19 @@ $(document).ready(function () {
 
     $('.sortable').sortable({
         connectWith:".sortable",
-    });
+    }).disableSelection();
 
-    $(toDoListEl, inProgressListEl, doneListEl).droppable({
-        accept:".sortable",
+    // I split this up into 3 functions. It was not working when I had them all on one line separated by commas.
+    $(toDoCard).droppable({
+        accept:".card",
         drop: handleDrop
     });
-
+    $(inProgressCard).droppable({
+        accept:".card",
+        drop: handleDrop
+    });
+    $(doneCard).droppable({
+        accept:".card",
+        drop: handleDrop
+    });
 });
