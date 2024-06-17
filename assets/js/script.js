@@ -67,25 +67,43 @@ function createTaskCard(task) {
         cardFooter.append(deleteTask);
 
         if (task.status==='todo-cards') {
+
+            if (task.date < dayjs().format('MM/DD/YYYY')) {
+                taskCard.addClass("card text-white bg-danger my-2")
+                deleteTask.attr("class", "btn btn-outline-light")
+            }
+            else if (task.date === dayjs().format('MM/DD/YYYY')) {
+                taskCard.addClass("card text-dark bg-warning my-2")
+                deleteTask.attr("class", "btn btn-outline-dark")
+            }
+            else if (task.date > dayjs().format('MM/DD/YYYY')) {
+                taskCard.addClass("card bg-light my-2")
+            }
             toDoCard.append(taskCard)
         }
         else if (task.status==='in-progress-cards') {
+
+            if (task.date < dayjs().format('MM/DD/YYYY')) {
+                taskCard.addClass("card text-white bg-danger my-2")
+                deleteTask.attr("class", "btn btn-outline-light")
+            }
+            else if (task.date === dayjs().format('MM/DD/YYYY')) {
+                taskCard.addClass("card text-dark bg-warning my-2")
+                deleteTask.attr("class", "btn btn-outline-dark")
+            }
+            else if (task.date > dayjs().format('MM/DD/YYYY')) {
+                taskCard.addClass("card bg-light my-2")
+            }
             inProgressCard.append(taskCard)}
+
         else if (task.status==='done-cards') {
+            taskCard.attr("class", "text-dark bg-light my-2")
+            taskCard.attr("class", "card bg-light my-2")
+            deleteTask.attr("class", "btn btn-outline-dark")
             doneCard.append(taskCard)
             };
 
-    if (task.date < dayjs().format('MM/DD/YYYY')) {
-        taskCard.addClass("card text-white bg-danger my-2")
-        deleteTask.attr("class", "btn btn-outline-light")
-    }
-    else if (task.date === dayjs().format('MM/DD/YYYY')) {
-        taskCard.addClass("card text-dark bg-warning my-2")
-        deleteTask.attr("class", "btn btn-outline-dark")
-    }
-    else if (task.date > dayjs().format('MM/DD/YYYY')) {
-        taskCard.addClass("card bg-light my-2")
-    }
+
 
 
 };
@@ -94,7 +112,6 @@ function createTaskCard(task) {
 function renderTaskList() {
     if (taskList != null) {
         for (let i = 0; i < taskList.length; ++i) {
-            console.log(taskList[i].status);
             createTaskCard(taskList[i]);
         }
     }
@@ -142,9 +159,26 @@ function handleDrop(event, ui) {
     const cardLane = $(this).attr('id');
     cardId = Number(dropCard.attr('id'));
     index = taskList.findIndex(task => task.id === cardId);
-    console.log('Status before ' + taskList[index].status);
     taskList[index].status = cardLane;
-    console.log('Status after' + taskList[index].status);
+    console.log(ui.helper[0]);
+    if (cardLane ==='done-cards') {
+        $(ui.helper[0]).attr("class", "card text-dark bg-light my-2");
+        $(ui.helper[0]).children().children('.card-footer').children('.btn').attr("class", "btn btn-outline-dark");
+    }
+    else if (cardLane ==='in-progress-cards' || 'todo-cards') {
+        if (taskList[index].date < dayjs().format('MM/DD/YYYY')) {
+            $(ui.helper[0]).attr("class", "card text-white bg-danger my-2");
+            $(ui.helper[0]).children().children('.card-footer').children('.btn').attr("class", "btn btn-outline-light");
+        }
+        else if (taskList[index].date === dayjs().format('MM/DD/YYYY')) {
+            $(ui.helper[0]).attr("class", "card text-dark bg-warning my-2");
+            $(ui.helper[0]).children().children('.card-footer').children('.btn').attr("class", "btn btn-outline-dark");
+        }
+        else if (taskList[index].date > dayjs().format('MM/DD/YYYY')) {
+            $(ui.helper[0]).attr("class", "card text-dark bg-light my-2");
+            $(ui.helper[0]).children().children('.card-footer').children('.btn').attr("class", "btn btn-outline-dark");
+        }
+    };
     localStorage.setItem("tasks", JSON.stringify(taskList));
 };
 
